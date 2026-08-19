@@ -4,68 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inspired WiFi Sensing Project</title>
-
   <style>
-    :root {
-      color-scheme: dark;
-    }
-
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       background: #0b0f14;
       color: #f5f7fa;
+      padding: 24px;
     }
-
     main {
-      width: min(720px, 90vw);
-      padding: 48px;
+      width: min(720px, 100%);
+      padding: 40px 32px;
       text-align: center;
       border: 1px solid #26303b;
       border-radius: 20px;
       background: #111820;
-      box-sizing: border-box;
     }
-
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
     }
-
     p {
       margin: 8px 0;
       color: #aeb8c4;
       line-height: 1.6;
     }
-
-    a {
-      display: inline-block;
-      margin-top: 24px;
-      padding: 12px 18px;
-      border-radius: 10px;
+    .links {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    a.btn {
+      display: block;
+      padding: 14px 18px;
+      border-radius: 12px;
       background: #f5f7fa;
       color: #0b0f14;
       text-decoration: none;
       font-weight: 700;
     }
+    a.btn.secondary {
+      background: transparent;
+      color: #f5f7fa;
+      border: 1px solid #3a4654;
+    }
+    a.btn:hover { opacity: 0.92; }
+    .credit {
+      margin-top: 28px;
+      font-size: 13px;
+      color: #7f8b99;
+    }
+    .credit a { color: #8ec8ff; }
   </style>
 </head>
-
 <body>
   <main>
     <h1>Inspired WiFi Sensing Project</h1>
+    <p>Browser demos from an open-source WiFi sensing experiment.</p>
+    <p>Based on the original <strong>RuView</strong> project.</p>
 
-    <p>GitHub Pages deployment is working.</p>
+    <div class="links">
+      <a class="btn" href="./pointcloud/">Open Point Cloud Demo</a>
+      <a class="btn secondary" href="./three.js/">Open three.js Demos</a>
+      <a class="btn secondary" href="./nvsim/">Open nvsim Dashboard</a>
+      <a class="btn secondary" href="https://github.com/heripurnamawibu-art/Inspired_Wifi_Sensing_Project">View GitHub Repo</a>
+    </div>
 
-    <p>
-      This page is a temporary deployment check while
-      the project interface is prepared.
+    <p class="credit">
+      Inspired by
+      <a href="https://github.com/ruvnet/RuView" target="_blank" rel="noopener">ruvnet/RuView</a>
     </p>
-
-    <a href="./api-docs/">Open API Docs</a>
   </main>
 </body>
 </html>
