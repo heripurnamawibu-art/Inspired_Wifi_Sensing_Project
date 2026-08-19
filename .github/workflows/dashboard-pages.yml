@@ -3,6 +3,8 @@ name: nvsim Dashboard → GitHub Pages
 # Deploys the nvsim Vite/Lit dashboard to gh-pages/nvsim/ — preserving
 # the existing observatory/, pose-fusion/, and root index.html demos
 # already published from gh-pages. ADR-092 §9.
+#
+# Fixed base path for this fork: Inspired_Wifi_Sensing_Project
 
 on:
   push:
@@ -72,7 +74,7 @@ jobs:
       - name: Build dashboard
         working-directory: dashboard
         env:
-          NVSIM_BASE: /RuView/nvsim/
+          NVSIM_BASE: /Inspired_Wifi_Sensing_Project/nvsim/
         run: npm run build
 
       - name: Deploy to gh-pages/nvsim/
@@ -82,7 +84,7 @@ jobs:
           publish_dir: ./dashboard/dist
           destination_dir: nvsim
           # CRITICAL: preserves observatory/, pose-fusion/, root index.html
-          # and any other RuView demos already on gh-pages.
+          # and any other demos already on gh-pages.
           keep_files: true
           commit_message: 'deploy(nvsim): ${{ github.sha }}'
           user_name: 'github-actions[bot]'
