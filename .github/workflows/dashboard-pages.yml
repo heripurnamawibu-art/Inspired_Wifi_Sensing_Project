@@ -1,8 +1,8 @@
 name: nvsim Dashboard → GitHub Pages
 
 # Deploys the nvsim Vite/Lit dashboard to gh-pages/nvsim/
-# wasm-pack resolves --out-dir relative to the crate (crates/nvsim),
-# so path must be ../../../dashboard/public/nvsim-pkg
+# Critical: wasm-pack writes a .gitignore with '*' inside the pkg dir.
+# peaceiris respects that and skips every WASM file unless we delete it.
 
 on:
   push:
@@ -52,13 +52,15 @@ jobs:
       - name: Build nvsim WASM
         working-directory: v2
         run: |
-          # out-dir is relative to crates/nvsim, not v2/
-          # crates/nvsim → ../../../ = repo root
           wasm-pack build crates/nvsim \
             --target web \
             --out-dir ../../../dashboard/public/nvsim-pkg \
             --release \
             -- --no-default-features --features wasm
+
+          # wasm-pack adds .gitignore with '*' — must remove or deploy skips all pkg files
+          rm -f ../dashboard/public/nvsim-pkg/.gitignore
+
           echo "=== nvsim-pkg contents ==="
           ls -la ../dashboard/public/nvsim-pkg
 
@@ -79,6 +81,8 @@ jobs:
           NVSIM_BASE: /nvsim/
         run: |
           npm run build
+          # safety: strip any nested gitignore Vite may have copied
+          rm -f dist/nvsim-pkg/.gitignore
           echo "=== dist contents ==="
           ls -la dist
           ls -la dist/nvsim-pkg || (echo "ERROR: nvsim-pkg missing from dist" && exit 1)
@@ -90,6 +94,8 @@ jobs:
           publish_dir: ./dashboard/dist
           destination_dir: nvsim
           keep_files: true
+          # Do not apply repo .gitignore rules when publishing built assets
+          exclude_assets: ''
           commit_message: 'deploy(nvsim): ${{ github.sha }}'
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
