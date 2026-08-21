@@ -1,1 +1,1 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Inspired_Wifi_Sensing_Project/nvsim/sw.js', { scope: '/Inspired_Wifi_Sensing_Project/nvsim/' })})}
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/nvsim/sw.js', { scope: '/nvsim/' })})}
