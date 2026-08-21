@@ -1,7 +1,8 @@
 name: nvsim Dashboard → GitHub Pages
 
 # Deploys the nvsim Vite/Lit dashboard to gh-pages/nvsim/
-# Fixed: wasm-pack out-dir must be ../dashboard (from v2/), not ../../dashboard
+# wasm-pack resolves --out-dir relative to the crate (crates/nvsim),
+# so path must be ../../../dashboard/public/nvsim-pkg
 
 on:
   push:
@@ -51,10 +52,11 @@ jobs:
       - name: Build nvsim WASM
         working-directory: v2
         run: |
-          # From v2/, one level up is repo root → dashboard/public/nvsim-pkg
+          # out-dir is relative to crates/nvsim, not v2/
+          # crates/nvsim → ../../../ = repo root
           wasm-pack build crates/nvsim \
             --target web \
-            --out-dir ../dashboard/public/nvsim-pkg \
+            --out-dir ../../../dashboard/public/nvsim-pkg \
             --release \
             -- --no-default-features --features wasm
           echo "=== nvsim-pkg contents ==="
@@ -74,13 +76,12 @@ jobs:
       - name: Build dashboard
         working-directory: dashboard
         env:
-          # Netlify serves at /nvsim/ ; GitHub project pages use repo name prefix
           NVSIM_BASE: /nvsim/
         run: |
           npm run build
           echo "=== dist contents ==="
           ls -la dist
-          ls -la dist/nvsim-pkg || echo "WARNING: nvsim-pkg missing from dist"
+          ls -la dist/nvsim-pkg || (echo "ERROR: nvsim-pkg missing from dist" && exit 1)
 
       - name: Deploy to gh-pages/nvsim/
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453
